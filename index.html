@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Happy 22nd Monthsary 💗</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+      color: #fff;
+      background:
+        radial-gradient(ellipse at 20% 15%, rgba(255, 105, 180, 0.35), transparent 55%),
+        radial-gradient(ellipse at 85% 80%, rgba(147, 88, 255, 0.40), transparent 55%),
+        radial-gradient(ellipse at 50% 120%, rgba(255, 150, 120, 0.35), transparent 60%),
+        linear-gradient(160deg, #1a0b2e 0%, #2d1248 45%, #4a1a5c 100%);
+    }
+
+    #fx {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .stage {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      padding-top: calc(20px + env(safe-area-inset-top, 0px));
+      padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      cursor: pointer;
+    }
+
+    /* ---------- Landing ---------- */
+    #landing {
+      text-align: center;
+      transition: opacity .8s ease, transform .8s ease, filter .8s ease;
+    }
+
+    #landing.out {
+      opacity: 0;
+      transform: scale(1.5);
+      filter: blur(10px);
+      pointer-events: none;
+    }
+
+    .big-heart {
+      font-size: clamp(3rem, 12vw, 6rem);
+      display: inline-block;
+      animation: heartbeat 3.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(255, 70, 140, .9));
+      margin-bottom: 10px;
+    }
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      15% {
+        transform: scale(1.25);
+      }
+
+      30% {
+        transform: scale(1);
+      }
+
+      45% {
+        transform: scale(1.18);
+      }
+
+      60% {
+        transform: scale(1);
+      }
+    }
+
+    .title {
+      font-family: 'Dancing Script', 'Brush Script MT', cursive;
+      font-weight: 700;
+      line-height: 1.1;
+      font-size: clamp(2.8rem, 11vw, 7.5rem);
+    }
+
+    .title .line {
+      display: block;
+    }
+
+    .title .char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(40px) scale(.5) rotate(-8deg);
+      animation:
+        letterIn .9s cubic-bezier(.2, 1.4, .4, 1) forwards,
+        glow 7s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 70ms), calc(1.2s + var(--i) * 250ms);
+    }
+
+    @keyframes letterIn {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0);
+      }
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 130, 190, .8), 0 0 30px rgba(255, 60, 140, .6);
+      }
+
+      50% {
+        color: #ffd6ec;
+        text-shadow: 0 0 18px #ff7ab8, 0 0 45px #ff2d8f, 0 0 80px #c24bff;
+      }
+    }
+
+    .hint {
+      margin-top: clamp(20px, 5vh, 40px);
+      font-weight: 300;
+      font-size: clamp(.9rem, 2.8vw, 1.25rem);
+      letter-spacing: .06em;
+      color: rgba(255, 255, 255, .9);
+      animation: hintPulse 5s ease-in-out infinite;
+    }
+
+    @keyframes hintPulse {
+
+      0%,
+      100% {
+        opacity: .45;
+        transform: translateY(0);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translateY(-4px);
+      }
+    }
+
+    /* ---------- Message card ---------- */
+    #card-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      padding-top: calc(20px + env(safe-area-inset-top, 0px));
+      padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      opacity: 0;
+      pointer-events: none;
+      perspective: 1200px;
+    }
+
+    #card-wrap.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      border-radius: 28px;
+      padding: 3px;
+      background: linear-gradient(120deg, #ff6fb1, #ffb86f, #b36bff, #ff6fb1);
+      background-size: 300% 300%;
+      animation: borderFlow 6s linear infinite, cardIn 1s cubic-bezier(.2, 1.2, .3, 1) both;
+      box-shadow: 0 0 40px rgba(255, 90, 160, .45), 0 25px 80px rgba(0, 0, 0, .5);
+    }
+
+    @keyframes borderFlow {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      100% {
+        background-position: 300% 50%;
+      }
+    }
+
+    @keyframes cardIn {
+      0% {
+        opacity: 0;
+        transform: translateY(60px) rotateX(35deg) scale(.8);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0) scale(1);
+      }
+    }
+
+    .card-inner {
+      background: rgba(28, 10, 46, .88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 25px;
+      padding: clamp(22px, 5vw, 46px);
+      overflow-y: auto;
+      max-height: calc(100vh - 46px);
+      max-height: calc(100dvh - 46px);
+    }
+
+    .card-inner::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .card-inner::-webkit-scrollbar-thumb {
+      background: rgba(255, 120, 190, .5);
+      border-radius: 10px;
+    }
+
+    .card h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.9rem, 6vw, 3rem);
+      text-align: center;
+      margin-bottom: 18px;
+      background: linear-gradient(90deg, #ff9ccf, #ffd1a1, #d3a4ff, #ff9ccf);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textFlow 5s linear infinite;
+    }
+
+    @keyframes textFlow {
+      to {
+        background-position: 300% 0;
+      }
+    }
+
+    #typed {
+      white-space: pre-line;
+      font-weight: 300;
+      font-size: clamp(.95rem, 2.7vw, 1.12rem);
+      line-height: 1.85;
+      color: #fbeaf5;
+      text-align: left;
+      min-height: 3em;
+    }
+
+    .caret {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: #ff8cc6;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: caret .8s steps(1) infinite;
+    }
+
+    @keyframes caret {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .ending {
+      text-align: center;
+      margin-top: 26px;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: opacity 1s ease, max-height 1s ease;
+    }
+
+    .ending.show {
+      opacity: 1;
+      max-height: 260px;
+    }
+
+    .ending .iluv {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.8rem, 6vw, 2.6rem);
+      color: #ffc4e3;
+      text-shadow: 0 0 20px rgba(255, 80, 160, .8);
+    }
+
+    .ending .hearts {
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      margin: 6px 0 14px;
+    }
+
+    .ending .hearts span {
+      display: inline-block;
+      animation: heartbeat 3.2s ease-in-out infinite;
+    }
+
+    .ending .hearts span:nth-child(2) {
+      animation-delay: .3s;
+    }
+
+    .ending .hearts span:nth-child(3) {
+      animation-delay: .6s;
+    }
+
+    .ending .hearts span:nth-child(4) {
+      animation-delay: .9s;
+    }
+
+    .ending .hearts span:nth-child(5) {
+      animation-delay: 1.2s;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: .95rem;
+      color: #fff;
+      background: linear-gradient(135deg, #ff5fa2, #b05bff);
+      border: none;
+      border-radius: 999px;
+      padding: 11px 26px;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(255, 70, 150, .5);
+      transition: transform .2s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.06);
+    }
+
+    .btn:active {
+      transform: scale(.96);
+    }
+
+    .skip-hint {
+      text-align: center;
+      margin-top: 10px;
+      font-size: .75rem;
+      color: rgba(255, 255, 255, .4);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .title .char,
+      .big-heart,
+      .hint {
+        animation-duration: .01s;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="fx"></canvas>
+
+  <div class="stage" id="stage">
+    <div id="landing">
+      <div class="big-heart">💖</div>
+      <h1 class="title" id="title"></h1>
+      <p class="hint">tap anywhere, babyy ko 🥺💗</p>
+    </div>
+
+    <div id="card-wrap">
+      <div class="card">
+        <div class="card-inner" id="cardInner">
+          <h2>Para sa'yo, babyy ko 💌</h2>
+          <p id="typed"></p>
+          <div class="ending" id="ending">
+            <div class="iluv">I love you so much 💗</div>
+            <div class="hearts"><span>💖</span><span>💗</span><span>💕</span><span>💗</span><span>💖</span></div>
+            <button class="btn" id="replay">Replay 🎆</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       MESSAGE
+       ============================================================ */
+    const MESSAGE = "Happy monthsary babyy ko,\n\nIsang buwan naman na po ang lumipas babyy ko at nalagpasan natin mga pag subok na dumating po satin alam ko po hindi naging madali ito pero gagawin natin lahat ng mga pagsubok na dumating satin babyy ko walang makakapigil satin pag magkasama tayong dalawa pero hindi muna yung literal ah kasi need pa natin mag ipon eh HAHAHAHA, pero Kahit ganon malalagpasan din natin itong pagsubok na ito at magsasama din lang ulit tayo sa iisang bubong babyy ko kunting tiis pa po babyy ko.\n\nSa mga nakalipas na araw na bubusy tayo sa mga work natin pero Kahit ganon hindi parin natin nakakalimutan ang isat isa at sobrang saya kapag ganon, Oo may mga away pero inaayos natin ginagawa natin parang maging better sa isat isa.\n\nI love you so much babyy ko gagawin ko po lahat sayo at ibibigay ko po lahat dahil deserve mo po lahat babyy ko. Mahal na mahal kita sobraa babyy ko at habang buhay kitang mamahalin at ikaw lang po wala ng iba.\n\nSyempre may kaagaw kana pag magkakaroon man na tayo ng anak HAHAHHAA pero matagal pa po yun need muna natin ibuild yung financial natin kasi ayoko na maghihirap ka or kung magkaanak man tayo kaya gagawin ko po lahat.\n\nI lovee you babyyy ko Sorry po kung minsan inistress po kita pasenya na po, minsan kasi ang ganda mo po asarin yun nga lang napapasobra po babyyy ko AHAHAHHAA, sana mapatawad mo po ako babyy ko.\n\nThank you rin po dahil andyan ka po parati para sakin ako talaga pinaka swerteng kumag HAHAHAHAHA.\n\nHappy 22th monthsary babyyy ko I love you so much muti kong prinsesaa mwahhhhhhh!!";
+
+    /* ============================================================
+       ANIMATED TITLE (letter by letter)
+       ============================================================ */
+    const titleEl = document.getElementById('title');
+    let idx = 0;
+    ["Happy 22nd", "Monthsary!"].forEach(line => {
+      const l = document.createElement('span');
+      l.className = 'line';
+      [...line].forEach(ch => {
+        const s = document.createElement('span');
+        s.className = 'char';
+        s.style.setProperty('--i', idx++);
+        s.innerHTML = ch === ' ' ? '&nbsp;' : ch;
+        l.appendChild(s);
+      });
+      titleEl.appendChild(l);
+    });
+
+    /* ============================================================
+       CANVAS EFFECTS: stars, floating hearts, fireworks, sparkles
+       ============================================================ */
+    const canvas = document.getElementById('fx');
+    const ctx = canvas.getContext('2d');
+    let W, H, DPR;
+
+    function resize() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W * DPR;
+      canvas.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      initStars();
+    }
+    window.addEventListener('resize', resize);
+
+    const COLORS = ['#ff5fa2', '#ff8cc6', '#ffb86f', '#ffd966', '#b36bff', '#ff6f91', '#ffffff', '#7fd8ff'];
+    const rand = (a, b) => a + Math.random() * (b - a);
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+    let stars = [];
+    function initStars() {
+      const n = Math.floor((W * H) / 5500);
+      stars = Array.from({ length: n }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: rand(.3, 1.6),
+        tw: rand(0, Math.PI * 2),
+        sp: rand(.003, .011)
+      }));
+    }
+
+    const floaters = [];   // rising hearts
+    const particles = [];  // firework bits
+    const sparkles = [];   // cursor trail
+    const shooting = [];   // shooting stars
+
+    function drawHeart(x, y, size, color, alpha, rot = 0) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = size * .8;
+      ctx.beginPath();
+      const s = size / 16;
+      ctx.moveTo(0, 5 * s);
+      ctx.bezierCurveTo(-18 * s, -6 * s, -8 * s, -20 * s, 0, -9 * s);
+      ctx.bezierCurveTo(8 * s, -20 * s, 18 * s, -6 * s, 0, 5 * s);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function spawnFloater() {
+      floaters.push({
+        x: rand(0, W),
+        y: H + 30,
+        size: rand(8, 24),
+        vy: rand(.4, 1.3),
+        sway: rand(0, Math.PI * 2),
+        swaySp: rand(.01, .03),
+        swayAmp: rand(.3, 1),
+        color: pick(['#ff5fa2', '#ff8cc6', '#ffb3d9', '#c98bff', '#ff9a8b']),
+        alpha: rand(.35, .8),
+        rot: rand(-.4, .4)
+      });
+    }
+
+    function spawnShootingStar() {
+      shooting.push({
+        x: rand(W * .2, W),
+        y: rand(0, H * .4),
+        vx: rand(-9, -5),
+        vy: rand(3, 6),
+        life: 1
+      });
+    }
+
+    /* ---- Fireworks ---- */
+    function burst(x, y, big = false) {
+      const color1 = pick(COLORS), color2 = pick(COLORS);
+
+      // Heart-shaped burst
+      const n = big ? 70 : 42;
+      const scale = big ? .42 : .28;
+      for (let i = 0; i < n; i++) {
+        const t = (i / n) * Math.PI * 2;
+        const hx = 16 * Math.pow(Math.sin(t), 3);
+        const hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        particles.push({
+          x, y,
+          vx: hx * scale * rand(.9, 1.1),
+          vy: hy * scale * rand(.9, 1.1),
+          life: 1,
+          decay: rand(.008, .014),
+          size: rand(1.8, 3),
+          color: color1,
+          type: 'dot',
+          grav: .04
+        });
+      }
+
+      // Round spark burst
+      const m = big ? 70 : 36;
+      for (let i = 0; i < m; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const sp = rand(1.5, big ? 8 : 5.5);
+        particles.push({
+          x, y,
+          vx: Math.cos(a) * sp,
+          vy: Math.sin(a) * sp,
+          life: 1,
+          decay: rand(.009, .018),
+          size: rand(1.2, 2.8),
+          color: Math.random() < .5 ? color2 : pick(COLORS),
+          type: 'dot',
+          grav: .06
+        });
+      }
+
+      // Little hearts
+      const hc = big ? 14 : 7;
+      for (let i = 0; i < hc; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const sp = rand(1, 4.5);
+        particles.push({
+          x, y,
+          vx: Math.cos(a) * sp,
+          vy: Math.sin(a) * sp - 1.5,
+          life: 1,
+          decay: rand(.006, .011),
+          size: rand(8, 15),
+          color: pick(['#ff5fa2', '#ff8cc6', '#ffb3d9', '#ffd966']),
+          type: 'heart',
+          rot: rand(-.5, .5),
+          grav: .035
+        });
+      }
+    }
+
+    function confettiRain() {
+      for (let i = 0; i < 80; i++) {
+        particles.push({
+          x: rand(0, W),
+          y: rand(-H * .4, -10),
+          vx: rand(-1, 1),
+          vy: rand(1.5, 4),
+          life: 1,
+          decay: .0045,
+          size: rand(5, 9),
+          color: pick(COLORS),
+          type: 'confetti',
+          rot: rand(0, 6),
+          vr: rand(-.2, .2),
+          grav: 0
+        });
+      }
+    }
+
+    /* ---- Cursor / touch trail ---- */
+    let lastTrail = 0;
+    function trail(x, y) {
+      const now = performance.now();
+      if (now - lastTrail < 28) return;
+      lastTrail = now;
+      for (let i = 0; i < 2; i++) {
+        sparkles.push({
+          x: x + rand(-6, 6),
+          y: y + rand(-6, 6),
+          vx: rand(-.6, .6),
+          vy: rand(-1, .3),
+          life: 1,
+          size: rand(2, 5),
+          color: pick(['#ffffff', '#ffb3d9', '#ff8cc6', '#ffd966'])
+        });
+      }
+    }
+    window.addEventListener('pointermove', e => trail(e.clientX, e.clientY));
+    window.addEventListener('touchmove', e => {
+      const t = e.touches[0];
+      if (t) trail(t.clientX, t.clientY);
+    }, { passive: true });
+
+    /* ---- Main loop ---- */
+    let frame = 0;
+    function loop() {
+      frame++;
+      ctx.clearRect(0, 0, W, H);
+      ctx.shadowBlur = 0;
+
+      // stars
+      for (const s of stars) {
+        s.tw += s.sp;
+        const a = .35 + Math.abs(Math.sin(s.tw)) * .65;
+        ctx.globalAlpha = a;
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // shooting stars
+      if (frame % 260 === 0) spawnShootingStar();
+      for (let i = shooting.length - 1; i >= 0; i--) {
+        const s = shooting[i];
+        s.x += s.vx; s.y += s.vy; s.life -= .014;
+        if (s.life <= 0) { shooting.splice(i, 1); continue; }
+        const g = ctx.createLinearGradient(s.x, s.y, s.x - s.vx * 9, s.y - s.vy * 9);
+        g.addColorStop(0, `rgba(255,255,255,${s.life})`);
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = g;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.vx * 9, s.y - s.vy * 9);
+        ctx.stroke();
+      }
+
+      // floating hearts
+      if (frame % 22 === 0) spawnFloater();
+      for (let i = floaters.length - 1; i >= 0; i--) {
+        const f = floaters[i];
+        f.y -= f.vy;
+        f.sway += f.swaySp;
+        f.x += Math.sin(f.sway) * f.swayAmp;
+        if (f.y < -40) { floaters.splice(i, 1); continue; }
+        const fade = Math.min(1, (f.y) / (H * .25));
+        drawHeart(f.x, f.y, f.size, f.color, f.alpha * Math.min(1, fade), f.rot + Math.sin(f.sway) * .2);
+      }
+
+      // firework particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.grav;
+        if (p.type !== 'confetti') { p.vx *= .985; p.vy *= .985; }
+        p.life -= p.decay;
+        if (p.life <= 0 || p.y > H + 30) { particles.splice(i, 1); continue; }
+
+        if (p.type === 'dot') {
+          ctx.globalAlpha = Math.max(p.life, 0);
+          ctx.fillStyle = p.color;
+          ctx.shadowColor = p.color;
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * (.5 + p.life * .5), 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else if (p.type === 'heart') {
+          drawHeart(p.x, p.y, p.size, p.color, Math.max(p.life, 0), p.rot);
+        } else {
+          p.rot += p.vr;
+          p.x += Math.sin(p.rot * 2) * .8;
+          ctx.save();
+          ctx.globalAlpha = Math.min(1, p.life * 1.5);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+          ctx.restore();
+        }
+      }
+
+      // sparkle trail
+      for (let i = sparkles.length - 1; i >= 0; i--) {
+        const s = sparkles[i];
+        s.x += s.vx; s.y += s.vy; s.life -= .035;
+        if (s.life <= 0) { sparkles.splice(i, 1); continue; }
+        ctx.globalAlpha = s.life;
+        ctx.fillStyle = s.color;
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        // 4-point star
+        const r = s.size * s.life;
+        ctx.moveTo(s.x, s.y - r * 1.6);
+        ctx.quadraticCurveTo(s.x, s.y, s.x + r * 1.6, s.y);
+        ctx.quadraticCurveTo(s.x, s.y, s.x, s.y + r * 1.6);
+        ctx.quadraticCurveTo(s.x, s.y, s.x - r * 1.6, s.y);
+        ctx.quadraticCurveTo(s.x, s.y, s.x, s.y - r * 1.6);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(loop);
+    }
+
+    resize();
+    for (let i = 0; i < 10; i++) {
+      floaters.push({
+        x: rand(0, W), y: rand(H * .2, H),
+        size: rand(8, 24), vy: rand(.4, 1.3),
+        sway: rand(0, 6), swaySp: rand(.01, .03), swayAmp: rand(.3, 1),
+        color: pick(['#ff5fa2', '#ff8cc6', '#ffb3d9', '#c98bff']),
+        alpha: rand(.35, .8), rot: rand(-.4, .4)
+      });
+    }
+    loop();
+
+    /* ============================================================
+       INTERACTION
+       ============================================================ */
+    const landing = document.getElementById('landing');
+    const cardWrap = document.getElementById('card-wrap');
+    const cardInner = document.getElementById('cardInner');
+    const typedEl = document.getElementById('typed');
+    const endingEl = document.getElementById('ending');
+    const replayBtn = document.getElementById('replay');
+
+    let state = 'landing';   // landing -> typing -> done
+    let typeTimer = null;
+    let charIndex = 0;
+
+    const caret = document.createElement('span');
+    caret.className = 'caret';
+
+    function renderTyped() {
+      typedEl.textContent = MESSAGE.slice(0, charIndex);
+      typedEl.appendChild(caret);
+    }
+
+    function startTyping() {
+      state = 'typing';
+      charIndex = 0;
+      endingEl.classList.remove('show');
+      renderTyped();
+
+      const step = () => {
+        if (charIndex >= MESSAGE.length) return finishTyping();
+        const ch = MESSAGE[charIndex];
+        charIndex++;
+        renderTyped();
+        cardInner.scrollTop = cardInner.scrollHeight;
+        let delay = 22;
+        if (ch === ',') delay = 140;
+        else if (ch === '\n') delay = 260;
+        else if (ch === '!' || ch === '.') delay = 180;
+        typeTimer = setTimeout(step, delay);
+      };
+      typeTimer = setTimeout(step, 500);
+    }
+
+    function finishTyping() {
+      clearTimeout(typeTimer);
+      charIndex = MESSAGE.length;
+      typedEl.textContent = MESSAGE;
+      state = 'done';
+      endingEl.classList.add('show');
+      setTimeout(() => { cardInner.scrollTo({ top: cardInner.scrollHeight, behavior: 'smooth' }); }, 300);
+
+      // celebration
+      confettiRain();
+      [0, 350, 700, 1100, 1500].forEach(t => setTimeout(() => {
+        burst(rand(W * .15, W * .85), rand(H * .12, H * .5), true);
+      }, t));
+    }
+
+    function reveal(x, y) {
+      state = 'reveal';
+      burst(W / 2, H / 2, true);
+      setTimeout(() => burst(W * .22, H * .3), 250);
+      setTimeout(() => burst(W * .78, H * .3), 450);
+      setTimeout(() => burst(W * .5, H * .22, true), 750);
+      landing.classList.add('out');
+      setTimeout(() => {
+        landing.style.display = 'none';
+        cardWrap.classList.add('show');
+        startTyping();
+      }, 800);
+    }
+
+    document.getElementById('stage').addEventListener('click', e => {
+      if (state === 'landing') {
+        reveal(e.clientX, e.clientY);
+        return;
+      }
+      if (e.target.closest('#replay')) return;
+
+      // Fireworks wherever you tap
+      burst(e.clientX, e.clientY);
+
+      // Tap the card while typing to skip to the end
+      if (state === 'typing' && e.target.closest('.card')) {
+        finishTyping();
+      }
+    });
+
+    replayBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      clearTimeout(typeTimer);
+      burst(W / 2, H / 2, true);
+      cardWrap.classList.remove('show');
+      landing.style.display = '';
+      // force reflow, then bring landing back
+      void landing.offsetWidth;
+      landing.classList.remove('out');
+      state = 'landing';
+    });
+  </script>
+
+</body>
+
+</html>
